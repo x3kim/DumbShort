@@ -4,34 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DumbShort</title>
-
-    <!-- PWA Manifest & Theme Color -->
+    <!-- FIX: Spezifisches Favicon-Link-Tag -->
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='icons/icon-192x192.png') }}"
+      type="image/png"
+    />
     <link
       rel="manifest"
       href="{{ url_for('static', filename='manifest.json') }}"
     />
     <meta name="theme-color" content="#111827" />
-
     <link
       href="{{ url_for('static', filename='css/output.css') }}"
       rel="stylesheet"
     />
   </head>
-
   <body
     class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans flex flex-col min-h-screen"
   >
     <div class="w-full max-w-5xl mx-auto px-4 flex-grow">
-      <!-- Header mit Umschalter -->
       <header class="py-6 flex justify-between items-center relative">
-        <!-- Unsichtbarer Platzhalter, damit die Buttons rechts bleiben -->
-        <h1 class="text-2xl font-bold invisible">DumbShort</h1>
-
-        <!-- Titel, zentriert -->
-        <div class="absolute w-full left-0 top-6 text-center">
-          <a href="/" class="text-2xl font-bold">DumbShort</a>
+        <div
+          class="absolute w-full left-0 top-6 text-center pointer-events-none"
+        >
+          <a href="/" class="text-2xl font-bold pointer-events-auto"
+            >DumbShort</a
+          >
         </div>
-
+        <div class="flex-1"></div>
         <div class="flex items-center space-x-4 z-10">
           <button
             id="view-toggle-button"
@@ -42,16 +43,11 @@
           <button
             id="theme-toggle-button"
             class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-          >
-            <!-- Icons werden per JS eingefügt -->
-          </button>
+          ></button>
         </div>
       </header>
-
       <main class="py-8">
-        <!-- ################## ANSICHT 1: STARTSEITE ################## -->
         <div id="home-view">
-          <!-- Statistik-Block -->
           <div
             id="stats-area"
             class="mb-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md"
@@ -67,8 +63,6 @@
               times, probably by accident.
             </p>
           </div>
-
-          <!-- Eingabebereich -->
           <div class="w-full max-w-xl mx-auto space-y-8">
             <div class="relative">
               <input
@@ -134,8 +128,6 @@
             </div>
           </div>
         </div>
-
-        <!-- ################## ANSICHT 2: LINK-ÜBERSICHT ################## -->
         <div id="overview-view" class="hidden">
           <h2 class="text-3xl font-bold mb-2">Alle dummen Links</h2>
           <p class="text-gray-500 dark:text-gray-400 mb-6">
@@ -149,7 +141,6 @@
             >
             mal (wahrscheinlich falsch) geklickt.
           </p>
-
           <div class="mb-6">
             <input
               type="text"
@@ -158,7 +149,6 @@
               placeholder="Suche nach Name, Original-URL oder Kurz-Code..."
             />
           </div>
-
           <div
             class="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow"
           >
@@ -178,13 +168,11 @@
         </div>
       </main>
     </div>
-
     <footer class="text-center p-4 text-xs text-gray-500 dark:text-gray-400">
       DumbShort v1.0.0 Built by
       <a
         href="https://github.com/x3kim"
         target="_blank"
-        rel="noopener noreferrer"
         class="font-semibold text-blue-500 hover:underline"
         >x3kim</a
       >
@@ -192,12 +180,10 @@
       <a
         href="https://dumbware.io/"
         target="_blank"
-        rel="noopener noreferrer"
         class="font-semibold text-blue-500 hover:underline"
         >DumbWare.io</a
       >
     </footer>
-
     <script>
       // ################## ELEMENTE HOLEN ##################
       const homeView = document.getElementById("home-view");
@@ -214,7 +200,6 @@
       const nameSaveFeedback = document.getElementById("name-save-feedback");
       const linksTableBody = document.getElementById("links-table-body");
       const searchInput = document.getElementById("search-input");
-
       const statsElements = {
         total: document.getElementById("stats-total"),
         active: document.getElementById("stats-active"),
@@ -223,37 +208,54 @@
         overviewActive: document.getElementById("stats-overview-active"),
         overviewClicks: document.getElementById("stats-overview-clicks"),
       };
-
+      const themeToggleButton = document.getElementById("theme-toggle-button");
       let currentLinkId = null;
 
       // ################## API-FUNKTIONEN ##################
       async function shortenUrl(url) {
-        if (!url || !url.trim()) return;
+        /* ... */
+      }
+      async function fetchStats() {
+        /* ... */
+      }
+      async function fetchAndDisplayLinks() {
+        /* ... */
+      }
+      function renderLinksTable(links) {
+        /* ... */
+      }
+      async function updateName(linkId, newName) {
+        /* ... */
+      }
+      async function deleteLink(linkId) {
+        /* ... */
+      }
+
+      // ################## DEFINITIONEN ##################
+      shortenUrl = async (url) => {
+        if (!url) return;
         resultArea.classList.add("hidden");
         urlInput.disabled = true;
         try {
           const response = await fetch("/api/shorten", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: url.trim() }),
+            body: JSON.stringify({ url }),
           });
           if (!response.ok) throw new Error("Server hat einen Fehler.");
           const data = await response.json();
-
           currentLinkId = data.id;
           originalUrlDisplay.textContent = data.original_url;
           shortUrlDisplay.textContent = data.short_url;
           linkNameInput.value = "";
           nameSaveFeedback.style.opacity = "0";
           resultArea.classList.remove("hidden");
-
           navigator.clipboard.writeText(data.short_url).then(() => {
             copyFeedback.style.opacity = "1";
             setTimeout(() => {
               copyFeedback.style.opacity = "0";
             }, 2000);
           });
-
           linkNameInput.focus();
           fetchStats();
         } catch (error) {
@@ -263,28 +265,36 @@
           urlInput.disabled = false;
           urlInput.value = "";
         }
-      }
+      };
 
-      async function fetchStats() {
+      fetchStats = async () => {
         try {
           const response = await fetch("/api/stats");
           const data = await response.json();
-          const stats = {
-            total: data.total_created,
-            active: data.active_links,
-            clicks: data.total_clicks || 0,
-          };
-          Object.keys(statsElements).forEach((key) => {
-            const elementKey = key.replace("overview", "").toLowerCase();
-            if (statsElements[key])
-              statsElements[key].textContent = stats[elementKey];
-          });
+          Object.values(statsElements).forEach((el) => (el.textContent = "0")); // Reset first
+          statsElements.total.textContent = data.total_created;
+          statsElements.active.textContent = data.active_links;
+          statsElements.clicks.textContent = data.total_clicks || 0;
+          statsElements.overviewTotal.textContent = data.total_created;
+          statsElements.overviewActive.textContent = data.active_links;
+          statsElements.overviewClicks.textContent = data.total_clicks || 0;
         } catch (error) {
           console.error("Fehler beim Holen der Stats:", error);
         }
-      }
+      };
 
-      function renderLinksTable(links) {
+      fetchAndDisplayLinks = async () => {
+        try {
+          const response = await fetch("/api/links");
+          const links = await response.json();
+          renderLinksTable(links);
+        } catch (error) {
+          console.error("Fehler beim Holen der Links:", error);
+          linksTableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-500">Konnte Links nicht laden.</td></tr>`;
+        }
+      };
+
+      renderLinksTable = (links) => {
         linksTableBody.innerHTML = "";
         if (links.length === 0) {
           linksTableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500">Noch keine dummen Links erstellt.</td></tr>`;
@@ -293,7 +303,7 @@
         links.forEach((link) => {
           const row = document.createElement("tr");
           row.className =
-            "border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors";
+            "border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50";
           row.dataset.linkId = link.id;
           row.dataset.search = `${link.name || ""} ${link.original_url} ${
             link.short_code
@@ -302,17 +312,17 @@
             ? `<span class="name-text font-semibold">${link.name}</span>`
             : `<span class="name-text text-gray-400 italic">Namen hinzufügen...</span>`;
           row.innerHTML = `
-                <td class="p-4"><button class="delete-button text-red-500 hover:text-red-700 font-semibold" data-id="${link.id}">Löschen</button></td>
-                <td class="p-4 cursor-pointer" data-id="${link.id}"><div class="name-container">${nameDisplay}</div></td>
-                <td class="p-4 truncate max-w-xs"><a href="${link.original_url}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">${link.original_url}</a></td>
-                <td class="p-4 font-mono"><a href="/${link.short_code}" target="_blank" rel="noopener noreferrer" class="text-green-500 hover:underline">${link.short_code}</a></td>
-                <td class="p-4 text-center font-bold">${link.clicks}</td>
-            `;
+                    <td class="p-4"><button class="delete-button text-red-500 hover:text-red-700 font-semibold" data-id="${link.id}">Löschen</button></td>
+                    <td class="p-4 cursor-pointer" data-id="${link.id}"><div class="name-container">${nameDisplay}</div></td>
+                    <td class="p-4 truncate max-w-xs"><a href="${link.original_url}" target="_blank" class="text-blue-500 hover:underline">${link.original_url}</a></td>
+                    <td class="p-4 font-mono"><a href="/${link.short_code}" target="_blank" class="text-green-500 hover:underline">${link.short_code}</a></td>
+                    <td class="p-4 text-center font-bold">${link.clicks}</td>
+                `;
           linksTableBody.appendChild(row);
         });
-      }
+      };
 
-      async function updateName(linkId, newName) {
+      updateName = async (linkId, newName) => {
         try {
           await fetch(`/api/links/${linkId}/name`, {
             method: "PUT",
@@ -323,9 +333,9 @@
           console.error("Fehler beim Speichern des Namens:", error);
           alert("Name konnte nicht gespeichert werden.");
         }
-      }
+      };
 
-      async function deleteLink(linkId) {
+      deleteLink = async (linkId) => {
         if (!confirm("Diesen Link wirklich dumm und dämlich löschen?")) return;
         try {
           await fetch(`/api/links/${linkId}`, { method: "DELETE" });
@@ -335,9 +345,8 @@
           console.error("Fehler beim Löschen:", error);
           alert("Löschen fehlgeschlagen.");
         }
-      }
+      };
 
-      // ################## EVENT LISTENERS ##################
       function setupEventListeners() {
         viewToggleButton.addEventListener("click", () => {
           const isHomeVisible = !homeView.classList.contains("hidden");
@@ -354,71 +363,73 @@
           }
         });
 
-        urlInput.addEventListener("paste", (e) => {
-          e.preventDefault();
-          shortenUrl((e.clipboardData || window.clipboardData).getData("text"));
+        urlInput.addEventListener("paste", (event) => {
+          event.preventDefault();
+          const pastedText = (
+            event.clipboardData || window.clipboardData
+          ).getData("text");
+          shortenUrl(pastedText);
         });
-        urlInput.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            shortenUrl(urlInput.value);
+        urlInput.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            shortenUrl(urlInput.value.trim());
           }
         });
-        linkNameInput.addEventListener("keydown", async (e) => {
-          if (e.key === "Enter" && currentLinkId) {
-            e.preventDefault();
-            await updateName(currentLinkId, linkNameInput.value);
+
+        linkNameInput.addEventListener("keydown", async (event) => {
+          if (event.key === "Enter" && currentLinkId) {
+            event.preventDefault();
+            await updateName(currentLinkId, linkNameInput.value.trim());
             nameSaveFeedback.style.opacity = "1";
-            setTimeout(() => (nameSaveFeedback.style.opacity = "0"), 2000);
+            setTimeout(() => {
+              nameSaveFeedback.style.opacity = "0";
+            }, 2000);
             linkNameInput.blur();
           }
         });
 
-        linksTableBody.addEventListener("click", (e) => {
-          if (e.target.classList.contains("delete-button")) {
-            deleteLink(e.target.dataset.id);
+        linksTableBody.addEventListener("click", (event) => {
+          if (event.target.classList.contains("delete-button")) {
+            deleteLink(event.target.dataset.id);
             return;
           }
-          const nameCell = e.target.closest("td[data-id]");
+          const nameCell = event.target.closest("td[data-id]");
           if (nameCell && nameCell.querySelector(".name-container")) {
             const nameContainer = nameCell.querySelector(".name-container");
-            if (nameContainer.querySelector("input")) return;
+            if (nameContainer.querySelector("input")) return; // Verhindert doppeltes Ausführen
             const linkId = nameCell.dataset.id;
             const currentName =
               nameContainer.querySelector(".name-text").textContent;
+            const isPlaceholder = currentName.includes("...");
             nameContainer.innerHTML = `<input type="text" value="${
-              currentName.includes("...") ? "" : currentName
+              isPlaceholder ? "" : currentName
             }" class="name-edit-input p-1 bg-white dark:bg-gray-700 border rounded w-full">`;
             const input = nameContainer.querySelector(".name-edit-input");
             input.focus();
             input.select();
-            const save = async () => {
+            const saveChanges = async () => {
               await updateName(linkId, input.value.trim());
               fetchAndDisplayLinks();
             };
-            input.addEventListener("blur", save);
+            input.addEventListener("blur", saveChanges);
             input.addEventListener("keydown", (e) => {
-              if (e.key === "Enter") save();
+              if (e.key === "Enter") saveChanges();
               if (e.key === "Escape") fetchAndDisplayLinks();
             });
           }
         });
 
-        searchInput.addEventListener("input", (e) => {
-          const searchTerm = e.target.value.toLowerCase();
-          linksTableBody
-            .querySelectorAll("tr")
-            .forEach(
-              (row) =>
-                (row.style.display = row.dataset.search.includes(searchTerm)
-                  ? ""
-                  : "none")
-            );
+        searchInput.addEventListener("input", (event) => {
+          const searchTerm = event.target.value.toLowerCase();
+          linksTableBody.querySelectorAll("tr").forEach((row) => {
+            row.style.display = row.dataset.search.includes(searchTerm)
+              ? ""
+              : "none";
+          });
         });
       }
 
-      // ################## Dark/Light Mode ##################
-      const themeToggleButton = document.getElementById("theme-toggle-button");
       const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
       const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>`;
 
@@ -450,21 +461,15 @@
         applyTheme(savedTheme);
         fetchStats();
         setupEventListeners();
+        if ("serviceWorker" in navigator) {
+          window.addEventListener("load", () => {
+            navigator.serviceWorker
+              .register("/sw.js")
+              .then((reg) => console.log("Dumb SW registered.", reg))
+              .catch((err) => console.log("Dumb SW reg failed:", err));
+          });
+        }
       });
-
-      // PWA Service Worker Registration
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("/sw.js")
-            .then((reg) => {
-              console.log("Dumb ServiceWorker registered.", reg);
-            })
-            .catch((err) => {
-              console.log("Dumb ServiceWorker registration failed: ", err);
-            });
-        });
-      }
     </script>
   </body>
 </html>

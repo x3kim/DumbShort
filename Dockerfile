@@ -1,45 +1,45 @@
-# --- Stufe 1: Frontend bauen ---
-# Wir benutzen ein Node-Image, um unsere CSS-Datei zu kompilieren
-FROM node:18-alpine as builder
+# --- Stage 1: Build frontend ---
+# We use a Node image to compile our CSS file
+FROM node:18-alpine AS builder
 WORKDIR /frontend
 
-# Kopiere die package-Dateien und installiere die Node-Module
+# Copy the package files and install node modules
 COPY package*.json ./
 RUN npm install
 
-# Kopiere den Rest der Frontend-Dateien
+# Copy the rest of the frontend files
 COPY tailwind.config.js ./
 COPY static/ ./static/
 COPY templates/ ./templates/
 
-# Baue die finale CSS-Datei
+# Build the final CSS file
 RUN npm run css -- --minify
 
 
-# --- Stufe 2: Finale Python-Anwendung ---
-# Wir starten mit einem schlanken Python-Image
+# --- Stage 2: Final Python application ---
+# We start with a slim Python image
 FROM python:3.11-slim
 
-# Setze das Arbeitsverzeichnis im Container
+# Set the working directory in the container
 WORKDIR /app
 
-# Kopiere die Python-Abhängigkeiten
+# Copy Python dependencies
 COPY requirements.txt .
 
-# Installiere die Python-Pakete
+# Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Kopiere die gebauten Frontend-Assets von der ersten Stufe
+# Copy built frontend assets from the first stage
 COPY --from=builder /frontend/static ./static
 COPY --from=builder /frontend/templates ./templates
 
-# Kopiere den Rest der App (app.py, sw.js etc.)
+# Copy the rest of the app (app.py, sw.js, etc.)
 COPY app.py .
 COPY sw.js .
-# Die DB-Datei wird nicht kopiert, sie wird als Volume gemountet
+# The DB file is not copied, it will be mounted as a volume
 
-# Gib den Port frei, auf dem Gunicorn lauschen wird
+# Expose the port Gunicorn will listen on
 EXPOSE 5000
 
-# Der Befehl, um die Anwendung zu starten, wenn der Container läuft
+# The command to start the application when the container runs
 CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:5000", "app:app"]

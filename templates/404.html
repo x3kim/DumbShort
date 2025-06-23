@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="de" class="dark">
-  <!-- Startet standardmäßig im Dark-Mode für Konsistenz -->
+<html lang="en" class="dark">
+  <!-- Default to dark mode for consistency -->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>404 - Dumm gelaufen</title>
+    <title>404 - Oops</title>
     <link
       href="{{ url_for('static', filename='css/output.css') }}"
       rel="stylesheet"
@@ -15,22 +15,22 @@
   >
     <div class="p-8 space-y-4">
       <h1 class="text-8xl font-black text-blue-500">404</h1>
-      <h2 class="text-3xl font-bold">Dumm gelaufen.</h2>
+      <h2 class="text-3xl font-bold">Oops.</h2>
       <p class="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-        Dieser Link ist entweder dümmer als unsere App, oder er wurde von Aliens
-        entführt. Wahrscheinlich hat er aber nie existiert.
+        This link is either dumber than our app, or it was abducted by aliens.
+        Most likely, it never existed.
       </p>
       <div>
         <a
           href="/"
           class="mt-6 inline-block px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
         >
-          Einen neuen, besseren Link erstellen
+          Create a new, better link
         </a>
       </div>
     </div>
     <script>
-      // Kleines Skript, um das Theme vom localStorage zu übernehmen, falls vorhanden
+      // Small script to apply the theme from localStorage if present
       const savedTheme = localStorage.getItem("theme");
       if (savedTheme === "light") {
         document.documentElement.classList.remove("dark");

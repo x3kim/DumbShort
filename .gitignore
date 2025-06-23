@@ -27,11 +27,11 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Flask-spezifische Dateien
+# Flask-specific files
 instance/
 .webassets-cache
 
-# Virtuelle Umgebung
+# Virtual environment
 venv/
 .venv/
 env/
@@ -40,39 +40,39 @@ ENV/
 env.bak
 venv.bak
 
-# SQLite Datenbanken
-# Wir ignorieren die DB-Datei, da sie im Betrieb generiert wird und Daten enthält.
-# Für die Produktion sollte sie außerhalb des Repos liegen.
+# SQLite databases
+# We ignore the DB file, as it is generated during operation and contains data.
+# For production, it should be outside the repo.
 *.db
 *.sqlite
 *.sqlite3
 
 # Node.js / Frontend Build
-# Diese Ordner können riesig sein und sollten nie eingecheckt werden.
+# These folders can be huge and should never be checked in.
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Editor- / IDE-spezifische Konfigurationsdateien
+# Editor / IDE-specific configuration files
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
 
-# Betriebssystem-spezifische Dateien
+# OS-specific files
 .DS_Store
 Thumbs.db
 Desktop.ini
 
-# Log-Dateien
+# Log files
 *.log
 logs/
 
-# Docker-spezifisch (falls man lokale Build-Caches etc. hat)
+# Docker-specific (if you have local build caches etc.)
 .dockerignore
 
-# Lokale Konfigurationsdateien
+# Local configuration files
 .env.local
 .env.development.local
 .env.test.local

@@ -1,7 +1,7 @@
 {
   "name": "DumbShort",
   "short_name": "DumbShort",
-  "description": "Eine dumme, einfache App zum Kürzen von URLs. Kein Bullshit.",
+  "description": "A dumb, simple app for shortening URLs. No bullshit.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#111827",
