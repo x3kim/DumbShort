@@ -1,0 +1,79 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Flask-spezifische Dateien
+instance/
+.webassets-cache
+
+# Virtuelle Umgebung
+venv/
+.venv/
+env/
+.env
+ENV/
+env.bak
+venv.bak
+
+# SQLite Datenbanken
+# Wir ignorieren die DB-Datei, da sie im Betrieb generiert wird und Daten enthält.
+# Für die Produktion sollte sie außerhalb des Repos liegen.
+*.db
+*.sqlite
+*.sqlite3
+
+# Node.js / Frontend Build
+# Diese Ordner können riesig sein und sollten nie eingecheckt werden.
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor- / IDE-spezifische Konfigurationsdateien
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Betriebssystem-spezifische Dateien
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Log-Dateien
+*.log
+logs/
+
+# Docker-spezifisch (falls man lokale Build-Caches etc. hat)
+.dockerignore
+
+# Lokale Konfigurationsdateien
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

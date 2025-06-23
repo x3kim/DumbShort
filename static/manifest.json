@@ -1,0 +1,21 @@
+{
+  "name": "DumbShort",
+  "short_name": "DumbShort",
+  "description": "Eine dumme, einfache App zum Kürzen von URLs. Kein Bullshit.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/static/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
