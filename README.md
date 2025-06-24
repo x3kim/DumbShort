@@ -4,7 +4,6 @@ A stupidly simple, no-bullshit URL shortener. Paste a URL. It's shortened and th
 
 Built in the spirit of [DumbWare.io](https://dumbware.io) – because sometimes the dumbest solution is the smartest choice.
 
-
 https://github.com/user-attachments/assets/b043356c-77de-4005-bf21-0ebf0d909911
 
 ---
@@ -32,9 +31,9 @@ One command to rule them all. This pulls the image from Docker Hub and starts th
 docker run -d --name dumbshort -p 5001:5000 -v dumbshort_data:/app/data x3kim/dumbshort:latest
 ```
 
-1.  Go to `http://localhost:5001` in your browser.
-2.  Paste a long URL and press Enter or Space.
-3.  Enjoy how dumb simple that was.
+1. Go to `http://localhost:5001` in your browser.
+2. Paste a long URL and press Enter or Space.
+3. Enjoy how dumb simple that was.
 
 > **Note:** This uses a Docker-managed volume named `dumbshort_data` to store your database file, so your links persist even if you remove the container.
 
@@ -42,13 +41,15 @@ docker run -d --name dumbshort -p 5001:5000 -v dumbshort_data:/app/data x3kim/du
 
 This is the cleanest way. It uses the provided `docker-compose.yml` and is configurable.
 
-1.  Clone this repository.
-2.  (Optional) Create a `.env` file from `env.example` to customize the public port and other settings.
-3.  Run the command:
-    ```bash
-    docker-compose up -d
-    ```
-4.  The app will be available at `http://localhost:5001` (or your custom `APP_PORT`).
+1. Clone this repository.
+2. (Optional) Create a `.env` file from `env.example` to customize the public port and other settings.
+3. Run the command:
+
+```bash
+docker-compose up -d
+```
+
+4. The app will be available at `http://localhost:5001` (or your custom `APP_PORT`).
 
 ## ✨ Features
 
@@ -93,17 +94,17 @@ This app runs on simple **HTTP**. This is a deliberate choice to keep the setup 
 
 For instructions on running the app locally without Docker for development purposes, see the dedicated guide:
 
-👉 [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) <- still need to add this
+👉 [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md)
 
 ## 🤝 Contributing
 
 This project is probably perfect as it is, but if you find a way to make it even dumber and simpler, feel free to contribute.
 
-1.  Fork the repository.
-2.  Create your feature branch (`git checkout -b feature/EvenDumberFeature`).
-3.  Commit your changes (`git commit -m 'feat: Add a feature that is somehow even dumber'`).
-4.  Push to the branch (`git push origin feature/EvenDumberFeature`).
-5.  Open a Pull Request.
+1. Fork the repository.
+2. Create your feature branch (`git checkout -b feature/EvenDumberFeature`).
+3. Commit your changes (`git commit -m 'feat: Add a feature that is somehow even dumber'`).
+4. Push to the branch (`git push origin feature/EvenDumberFeature`).
+5. Open a Pull Request.
 
 ---
 
