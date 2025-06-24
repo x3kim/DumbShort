@@ -40,12 +40,11 @@ ENV/
 env.bak
 venv.bak
 
-# SQLite databases
-# We ignore the DB file, as it is generated during operation and contains data.
-# For production, it should be outside the repo.
+# Datenbank- und Datenverzeichnisse
 *.db
 *.sqlite
 *.sqlite3
+data/
 
 # Node.js / Frontend Build
 # These folders can be huge and should never be checked in.
@@ -73,7 +72,12 @@ logs/
 .dockerignore
 
 # Local configuration files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env
+.env.*
+
+# Medien-Dateien ignorieren, aber mp4 explizit erlauben
+*.avi
+*.mov
+!*.mp4
+
+# Standardmäßig alles andere erlauben
