@@ -1,145 +1,123 @@
-# 🔩 DumbShort
+# 🤏 DumbShort
 
-A dumb simple URL shortener app that does exactly one thing: Take long URLs and make them shorter and dumber. Built with Python (Flask) and Vanilla JavaScript.
+A stupidly simple, no-bullshit URL shortener. Paste a URL. It's shortened and the result is selected. Your muscle memory for `Ctrl+C` does the rest. (localhost works with auto-copy)
 
-_(Tip: Take a cool screenshot of your running app and upload it to Imgur or similar, then link it here)_
+Built in the spirit of [DumbWare.io](https://dumbware.io) – because sometimes the dumbest solution is the smartest choice.
 
-No accounts, no cookies (except for dark mode), no bullshit. Just paste a URL, get a short link.
+<p align="center">
+  <video
+    src="https://raw.githubusercontent.com/x3kim/DumbShort/main/DumbShort-preview.mp4"
+    max-width="100%"
+    autoplay
+    loop
+    muted
+    playsinline
+  >
+  </video>
+</p>
+
+---
 
 ## Table of Contents
 
 - [🚀 Quick Start](#-quick-start)
-- [🐳 Deployment with Docker](#-deployment-with-docker)
-- [👨‍💻 Local Development](LOCAL_DEVELOPMENT.md) _(I'll provide this later)_
 - [✨ Features](#-features)
 - [⚙️ Configuration](#️-configuration)
-- [🛡️ Security](#️-security)
+- [🛡️ Security & A Note on HTTPS](#️-security--a-note-on-https-and-network-access)
 - [🛠️ Technical Details](#️-technical-details)
+- [👨‍💻 Local Development](LOCAL_DEVELOPMENT.md)
 - [🤝 Contributing](#-contributing)
 - [📜 License](#-license)
 
 ## 🚀 Quick Start
 
-### Option 1: Docker (For Dummies)
+The only sane way to run this is with Docker. Pick your level of laziness.
+
+### Option 1: Docker Run (The "I just want it running" method)
+
+One command to rule them all. This pulls the image from Docker Hub and starts the app on port 5001.
 
 ```bash
-# Pull and start with one command
-docker run -d -p 5000:5000 -v ./data/dumbshort.db:/app/dumbshort.db --name dumbshort x3kim/dumbshort:latest
+docker run -d --name dumbshort -p 5001:5000 -v dumbshort_data:/app/data x3kim/dumbshort:latest
 ```
 
-_(Note: Replace `x3kim/dumbshort` with your Docker Hub name, e.g. `x3kim/dumbshort`)_
-
-1.  Go to `http://localhost:5000`
-2.  Paste a long URL and press Enter/Space.
+1.  Go to `http://localhost:5001` in your browser.
+2.  Paste a long URL and press Enter or Space.
 3.  Enjoy how dumb simple that was.
 
-### Option 2: Docker Compose (For Dummies Who Like to Customize)
+> **Note:** This uses a Docker-managed volume named `dumbshort_data` to store your database file, so your links persist even if you remove the container.
 
-Create a `docker-compose.yml` file:
+### Option 2: Docker Compose (Recommended for easy management)
 
-```yaml
-services:
-  dumbshort:
-    image: x3kim/dumbshort:latest # Replace this with your image name
-    ports:
-      - "5000:5000"
-    volumes:
-      # This is where your database will be stored persistently
-      - ./data:/app/data
-    environment:
-      # Change the port the app runs on inside the container
-      - PORT=5000
-      # Set the number of Gunicorn workers
-      - WORKERS=3
-      # Change the log level for more or less verbose output
-      - LOG_LEVEL=info
-    # Always restarts the container unless it is explicitly stopped
-    restart: unless-stopped
-```
+This is the cleanest way. It uses the provided `docker-compose.yml` and is configurable.
 
-_(Note: For environment variables to work, we would need to adjust the `CMD` line in the Dockerfile. This is an optional, advanced step.)_
-
-Then run:
-
-```bash
-docker compose up -d
-```
-
-1.  Go to `http://localhost:5000`
-2.  Shorten a URL. The data will be stored in `./data/dumbshort.db`.
-3.  Enjoy the glory of your dumb, short links.
-
-> **Note:** The `./data` folder on your computer is mounted into the container. We store the `dumbshort.db` there so your links persist after a restart. Create the `./data` folder before starting.
-
-### Option 3: Local Run (For Developers)
-
-For local development, debugging, and advanced usage, see the dedicated guide:
-
-👉 [Local Development Guide](LOCAL_DEVELOPMENT.md) _(We can create this file if needed)_
+1.  Clone this repository.
+2.  (Optional) Create a `.env` file from `env.example` to customize the public port and other settings.
+3.  Run the command:
+    ```bash
+    docker-compose up -d
+    ```
+4.  The app will be available at `http://localhost:5001` (or your custom `APP_PORT`).
 
 ## ✨ Features
 
-- 🚀 **Blazing Fast Shortening:** Paste a URL, press Space/Enter, done.
-- 📋 **Auto-Copy:** The shortened link is immediately copied to your clipboard.
-- 🎨 **Clean, Responsive UI:** With dark mode to save your eyes.
-- 📊 **Dumb Stats:** See how many links you've created and how often they've (accidentally) been clicked.
-- 🔍 **Searchable Overview:** Find all your links in a simple table.
-- ✏️ **Editable Names:** Give your links names to identify them more easily.
-- 🗑️ **Delete Function:** Remove links that were dumber than allowed.
-- 📦 **Docker Support:** Easy configuration and deployment.
+- 🚀 **Blazing Fast Workflow:** Paste a URL, press Space/Enter. The short link is created and **instantly selected** for easy copying.
+- 🪄 **Magic Auto-Copy:** When accessed via `localhost`, the link is also **automatically** copied to your clipboard for maximum laziness.
+- 📋 **Robust Copy Button:** A reliable manual copy button for every other situation (like accessing from another device on your network).
+- 🎨 **Clean, Responsive UI:** With a dark mode to save your precious eyes from the blinding light of overly long URLs.
+- 📊 **Dumb Stats:** See how many links you've launched into the void and how often they've (accidentally) been clicked.
+- 🔍 **Searchable Overview:** A simple, responsive table to find all your links.
+- ✏️ **Editable Names:** Give your links dumb names to identify them. Click to edit. It's that simple.
+- 🗑️ **Delete Function:** Mercilessly remove links that were dumber than allowed.
+- 🧠 **Smart URL Correction:** Typed `google.de`? We got you. We'll automatically fix it to `https://google.de` before saving.
+- 📦 **Simple Docker Support:** Easy configuration and deployment with a single container.
 - 📱 **PWA-ready:** "Install" the website as an app on your desktop or phone.
-- 🛡️ **No Tracking, No Bullshit:** What happens in DumbShort stays in DumbShort.
 
 ## ⚙️ Configuration
 
-### Environment Variables (for Docker)
+Configure the application via environment variables. Create a `.env` file from the `env.example` template for use with Docker Compose, or use `-e` flags with `docker run`.
 
-| Variable    | Description                                          | Default | Required |
-| ----------- | ---------------------------------------------------- | ------- | -------- |
-| `PORT`      | The port the app listens on in the container.        | 5000    | No       |
-| `WORKERS`   | Number of Gunicorn worker processes.                 | 3       | No       |
-| `LOG_LEVEL` | Log level for Gunicorn (`debug`, `info`, `warning`). | info    | No       |
+| Variable             | Description                                          | Default |
+| -------------------- | ---------------------------------------------------- | ------- |
+| `APP_PORT`           | The public HTTP port the app is accessible on.       | `5001`  |
+| `GUNICORN_WORKERS`   | Number of Gunicorn worker processes.                 | `4`     |
+| `GUNICORN_LOG_LEVEL` | Log level for Gunicorn (`debug`, `info`, `warning`). | `info`  |
 
-## 🛡️ Security
+## 🛡️ Security & A Note on HTTPS and Network Access
 
-Security by stupidity.
+This app runs on simple **HTTP**. This is a deliberate choice to keep the setup dumb and simple. However, modern browsers have strict security policies.
 
-- **No User Data:** We don't store any personal data, so we can't lose any.
-- **No External Scripts:** Everything that runs is part of this project. No tracking by third parties.
-- **Simple Database:** SQLite is a file. No open database port to be attacked.
+- **Why Auto-Copy & PWA Install Only Work on `localhost`:** Sensitive browser features like writing to the clipboard (`navigator.clipboard`) and the "Install App" prompt are only enabled in what browsers consider a "secure context". This is either `localhost` or any site served over `https://`.
+- **Accessing from other devices:** When you access the app from another computer on your network (e.g., `http://192.168.1.50:5001`), your browser correctly identifies this as an insecure connection. The app will work perfectly, but you will need to use the manual **"Copy" button**. This is a security feature, not a bug. (sadly only works on localhost too)
+- **For a full HTTPS setup:** You should run this container behind your own main reverse proxy (like Nginx Proxy Manager or Traefik), which can provide a valid SSL certificate.
 
 ## 🛠️ Technical Details
 
-### Stack
-
-- **Backend**: Python 3.11 with Flask
-- **Frontend**: Vanilla JavaScript (ES6+)
-- **Styling**: Tailwind CSS
+- **Backend**: Python 3.11 / Flask, Gunicorn
 - **Database**: SQLite
-- **Container**: Docker with Multi-Stage-Builds
-- **WSGI Server**: Gunicorn
+- **Frontend**: Vanilla JavaScript, Tailwind CSS
+- **Containerization**: Docker, Docker Compose
 
-### Dependencies
+## 👨‍💻 Local Development
 
-- **Python**: Flask, Gunicorn
-- **Node.js (only for the build)**: tailwindcss
+For instructions on running the app locally without Docker for development purposes, see the dedicated guide:
+
+👉 [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) <- still need to add this
 
 ## 🤝 Contributing
 
+This project is probably perfect as it is, but if you find a way to make it even dumber and simpler, feel free to contribute.
+
 1.  Fork the repository.
-2.  Create your feature branch (`git checkout -b feature/amazing-feature`).
-3.  Commit your changes (`git commit -m 'feat: Add some amazing feature'`).
-4.  Push to the branch (`git push origin feature/amazing-feature`).
+2.  Create your feature branch (`git checkout -b feature/EvenDumberFeature`).
+3.  Commit your changes (`git commit -m 'feat: Add a feature that is somehow even dumber'`).
+4.  Push to the branch (`git push origin feature/EvenDumberFeature`).
 5.  Open a Pull Request.
-
-## Support the Project
-
-If you like this dumb app, give the repo a star or buy me a coffee... oh wait, i don't have a buymeacoffee account yet.. damn.
 
 ---
 
-Made with ❤️ by [x3kim](https://github.com/x3kim) - inspired by [DumbWare.io](https://dumbware.io)
+Made with ❤️ and a healthy dose of sarcasm by [x3kim](https://github.com/x3kim) - inspired by the glorious philosophy of [DumbWare.io](https://dumbware.io)
 
 ## 📜 License
 
-This project is licensed under the [MIT License](LICENSE). Dumb, simple, and free.
+This project is licensed under the [MIT License](LICENSE). Dumb, simple, and free. Do whatever you want.
