@@ -4,17 +4,8 @@ A stupidly simple, no-bullshit URL shortener. Paste a URL. It's shortened and th
 
 Built in the spirit of [DumbWare.io](https://dumbware.io) – because sometimes the dumbest solution is the smartest choice.
 
-<p align="center">
-  <video
-    src="https://raw.githubusercontent.com/x3kim/DumbShort/main/DumbShort-preview.mp4"
-    max-width="100%"
-    autoplay
-    loop
-    muted
-    playsinline
-  >
-  </video>
-</p>
+
+https://github.com/user-attachments/assets/b043356c-77de-4005-bf21-0ebf0d909911
 
 ---
 
