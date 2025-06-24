@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DumbShort</title>
-    <!-- FIX: Spezifisches Favicon-Link-Tag -->
+
+    <!-- Favicon Link Tag -->
     <link
       rel="icon"
       href="{{ url_for('static', filename='icons/icon-192x192.png') }}"
       type="image/png"
     />
+
+    <!-- PWA Manifest & Theme Color -->
     <link
       rel="manifest"
       href="{{ url_for('static', filename='manifest.json') }}"
     />
     <meta name="theme-color" content="#111827" />
+
+    <!-- Our dumb CSS, built by Tailwind -->
     <link
       href="{{ url_for('static', filename='css/output.css') }}"
       rel="stylesheet"
@@ -23,8 +28,10 @@
   <body
     class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans flex flex-col min-h-screen"
   >
-    <div class="w-full max-w-5xl mx-auto px-4 flex-grow">
+    <!-- Main content container with max-width -->
+    <div class="w-full max-w-3xl mx-auto px-4 flex-grow">
       <header class="py-6 flex justify-between items-center relative">
+        <!-- Centered title -->
         <div
           class="absolute w-full left-0 top-6 text-center pointer-events-none"
         >
@@ -32,53 +39,64 @@
             >DumbShort</a
           >
         </div>
+
+        <!-- Spacer to push buttons to the right -->
         <div class="flex-1"></div>
+
+        <!-- Header Buttons -->
         <div class="flex items-center space-x-4 z-10">
           <button
             id="view-toggle-button"
             class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
           >
-            Zeige alle Links
+            All Shorts
           </button>
           <button
             id="theme-toggle-button"
             class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-          ></button>
+          >
+            <!-- Theme icons are inserted by JS -->
+          </button>
         </div>
       </header>
+
       <main class="py-8">
+        <!-- ########## VIEW 1: HOME ########## -->
         <div id="home-view">
           <div
             id="stats-area"
             class="mb-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md"
           >
-            <h2 class="text-xl font-bold mb-2">Your DumbShort Stats</h2>
+            <h2 class="text-xl font-bold mb-2">DumbShort Stats</h2>
             <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-              You've made a gloriously stupid total of
-              <strong id="stats-total" class="text-blue-500">0</strong> links.
-              Out of those,
-              <strong id="stats-active" class="text-green-500">0</strong> are
-              still alive and kicking. Together, they have been clicked
+              <strong id="stats-total" class="text-blue-500">0</strong> links
+              launched into the void,
+              <strong id="stats-active" class="text-green-500">0</strong>
+              survived the chaos,
               <strong id="stats-clicks" class="text-purple-500">0</strong>
-              times, probably by accident.
+              clicks later... success?
             </p>
           </div>
-          <div class="w-full max-w-xl mx-auto space-y-8">
+
+          <div class="w-full max-w-3xl mx-auto space-y-8">
             <div class="relative">
               <input
                 type="text"
                 id="url-input"
                 class="w-full p-4 text-lg bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                placeholder="https://einfügen.oder.tippen.und.enter.drücken"
+                placeholder="> Paste your dumb URL here and press Enter or Space"
               />
             </div>
+
             <div
               id="result-area"
               class="hidden bg-blue-50 dark:bg-gray-800 p-6 rounded-lg space-y-4"
             >
-              <h3 class="font-bold text-lg">Dein dummer Link ist fertig!</h3>
+              <h3 class="font-bold text-lg">🎊 Your dumb link is ready!</h3>
               <div>
-                <label class="text-sm font-medium text-gray-500"
+                <label
+                  for="original-url-display"
+                  class="text-sm font-medium text-gray-500"
                   >Original URL</label
                 >
                 <p
@@ -87,20 +105,27 @@
                 ></p>
               </div>
               <div>
-                <label class="text-sm font-medium text-gray-500"
-                  >Gekürzte URL</label
+                <label
+                  for="short-url-display"
+                  class="text-sm font-medium text-gray-500"
+                  >Short URL</label
                 >
-                <p
-                  id="short-url-display"
-                  class="text-blue-600 dark:text-blue-400 font-mono text-xl"
-                ></p>
+                <div class="flex items-center space-x-2 mt-1">
+                  <input
+                    type="text"
+                    readonly
+                    id="short-url-display"
+                    class="w-full bg-transparent border-none p-2 text-blue-600 dark:text-blue-400 font-mono text-xl focus:ring-0"
+                  />
+                  <button
+                    id="copy-button"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all flex-shrink-0"
+                  >
+                    Copy
+                  </button>
+                </div>
               </div>
-              <p
-                id="copy-feedback"
-                class="text-green-500 font-bold text-center opacity-0 transition-opacity"
-              >
-                In die Zwischenablage kopiert!
-              </p>
+
               <div
                 id="name-input-area"
                 class="pt-4 border-t border-gray-200 dark:border-gray-700"
@@ -108,45 +133,47 @@
                 <label
                   for="link-name-input"
                   class="text-sm font-medium text-gray-500"
-                  >Gib dem Link einen dummen Namen (optional)</label
+                  >Give it a stupid name (optional)</label
                 >
                 <div class="flex space-x-2 mt-1">
                   <input
                     type="text"
                     id="link-name-input"
                     class="flex-grow p-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md"
-                    placeholder="z.B. YT-Google (Enter zum Speichern)"
+                    placeholder="e.g., YT-Google (Enter to save)"
                   />
                 </div>
                 <p
                   id="name-save-feedback"
                   class="text-green-500 text-sm mt-1 opacity-0 transition-opacity"
                 >
-                  Name gespeichert!
+                  Name saved!
                 </p>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- ########## VIEW 2: OVERVIEW ########## -->
         <div id="overview-view" class="hidden">
-          <h2 class="text-3xl font-bold mb-2">Alle dummen Links</h2>
+          <h2 class="text-3xl font-bold mb-2">All Your Short Links</h2>
           <p class="text-gray-500 dark:text-gray-400 mb-6">
-            Insgesamt
+            A grand total of
             <strong id="stats-overview-total" class="text-blue-500">0</strong>
-            erstellt,
+            created,
             <strong id="stats-overview-active" class="text-green-500">0</strong>
-            noch aktiv, zusammen
+            still active, and clicked
             <strong id="stats-overview-clicks" class="text-purple-500"
               >0</strong
             >
-            mal (wahrscheinlich falsch) geklickt.
+            times (probably by mistake).
           </p>
           <div class="mb-6">
             <input
               type="text"
               id="search-input"
               class="w-full p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg"
-              placeholder="Suche nach Name, Original-URL oder Kurz-Code..."
+              placeholder="Search by name, original URL, or short code..."
             />
           </div>
           <div
@@ -155,11 +182,11 @@
             <table class="w-full text-left">
               <thead class="bg-gray-50 dark:bg-gray-700">
                 <tr>
-                  <th class="p-4 w-24">Aktion</th>
-                  <th class="p-4">Name (klick zum Ändern)</th>
+                  <th class="p-4 w-24">Action</th>
+                  <th class="p-4">Name (click to edit)</th>
                   <th class="p-4">Original URL</th>
-                  <th class="p-4">Kurz-Link</th>
-                  <th class="p-4 text-center w-20">Klicks</th>
+                  <th class="p-4">Short Link</th>
+                  <th class="p-4 text-center w-20">Clicks</th>
                 </tr>
               </thead>
               <tbody id="links-table-body"></tbody>
@@ -168,15 +195,17 @@
         </div>
       </main>
     </div>
+
+    <!-- The sticky footer -->
     <footer class="text-center p-4 text-xs text-gray-500 dark:text-gray-400">
-      DumbShort v1.0.0 Built by
+      DumbShort v1.0.0 Built by 🐣
       <a
         href="https://github.com/x3kim"
         target="_blank"
         class="font-semibold text-blue-500 hover:underline"
         >x3kim</a
       >
-      - inspired by
+      - inspired by 🧡
       <a
         href="https://dumbware.io/"
         target="_blank"
@@ -184,8 +213,9 @@
         >DumbWare.io</a
       >
     </footer>
+
     <script>
-      // ################## ELEMENTE HOLEN ##################
+      // ########## GET DOM ELEMENTS ##########
       const homeView = document.getElementById("home-view");
       const overviewView = document.getElementById("overview-view");
       const viewToggleButton = document.getElementById("view-toggle-button");
@@ -195,7 +225,7 @@
         "original-url-display"
       );
       const shortUrlDisplay = document.getElementById("short-url-display");
-      const copyFeedback = document.getElementById("copy-feedback");
+      const copyButton = document.getElementById("copy-button");
       const linkNameInput = document.getElementById("link-name-input");
       const nameSaveFeedback = document.getElementById("name-save-feedback");
       const linksTableBody = document.getElementById("links-table-body");
@@ -211,67 +241,77 @@
       const themeToggleButton = document.getElementById("theme-toggle-button");
       let currentLinkId = null;
 
-      // ################## API-FUNKTIONEN ##################
-      async function shortenUrl(url) {
-        /* ... */
-      }
-      async function fetchStats() {
-        /* ... */
-      }
-      async function fetchAndDisplayLinks() {
-        /* ... */
-      }
-      function renderLinksTable(links) {
-        /* ... */
-      }
-      async function updateName(linkId, newName) {
-        /* ... */
-      }
-      async function deleteLink(linkId) {
-        /* ... */
-      }
+      // ########## FUNCTION DEFINITIONS ##########
 
-      // ################## DEFINITIONEN ##################
-      shortenUrl = async (url) => {
+      // Funktion, um die Ansicht zuverlässig auf den Startzustand zurückzusetzen
+      const resetToHomeView = () => {
+        homeView.classList.remove("hidden");
+        overviewView.classList.add("hidden");
+        viewToggleButton.textContent = "All Shorts";
+      };
+
+      const shortenUrl = async (url) => {
         if (!url) return;
         resultArea.classList.add("hidden");
         urlInput.disabled = true;
+
         try {
           const response = await fetch("/api/shorten", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ url }),
           });
-          if (!response.ok) throw new Error("Server hat einen Fehler.");
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Server rejected the request.");
+          }
           const data = await response.json();
+
+          // UI Update
           currentLinkId = data.id;
           originalUrlDisplay.textContent = data.original_url;
-          shortUrlDisplay.textContent = data.short_url;
+          shortUrlDisplay.value = data.short_url;
+
           linkNameInput.value = "";
-          nameSaveFeedback.style.opacity = "0";
           resultArea.classList.remove("hidden");
-          navigator.clipboard.writeText(data.short_url).then(() => {
-            copyFeedback.style.opacity = "1";
-            setTimeout(() => {
-              copyFeedback.style.opacity = "0";
-            }, 2000);
-          });
-          linkNameInput.focus();
           fetchStats();
+
+          // VERSUCHE, automatisch zu kopieren
+          if (navigator.clipboard) {
+            navigator.clipboard
+              .writeText(data.short_url)
+              .then(() => {
+                console.log("Auto-copied to clipboard successfully!");
+                copyButton.textContent = "Copied!";
+                copyButton.classList.add("bg-green-500");
+                setTimeout(() => {
+                  copyButton.textContent = "Copy";
+                  copyButton.classList.remove("bg-green-500");
+                }, 2000);
+              })
+              .catch((err) =>
+                console.warn("Auto-copy failed. That's fine.", err)
+              );
+          }
+
+          // Markiere den Text IMMER
+          setTimeout(() => {
+            shortUrlDisplay.focus();
+            shortUrlDisplay.select();
+          }, 0);
         } catch (error) {
-          console.error("Fehler beim Kürzen:", error);
-          alert("Das war eine ungültige URL, du Dummkopf.");
+          console.error("Error shortening URL:", error);
+          alert(error.message || "An unknown error occurred.");
         } finally {
           urlInput.disabled = false;
           urlInput.value = "";
         }
       };
 
-      fetchStats = async () => {
+      const fetchStats = async () => {
         try {
           const response = await fetch("/api/stats");
           const data = await response.json();
-          Object.values(statsElements).forEach((el) => (el.textContent = "0")); // Reset first
           statsElements.total.textContent = data.total_created;
           statsElements.active.textContent = data.active_links;
           statsElements.clicks.textContent = data.total_clicks || 0;
@@ -279,50 +319,49 @@
           statsElements.overviewActive.textContent = data.active_links;
           statsElements.overviewClicks.textContent = data.total_clicks || 0;
         } catch (error) {
-          console.error("Fehler beim Holen der Stats:", error);
+          console.error("Could not fetch stats:", error);
         }
       };
 
-      fetchAndDisplayLinks = async () => {
+      const fetchAndDisplayLinks = async () => {
         try {
           const response = await fetch("/api/links");
           const links = await response.json();
           renderLinksTable(links);
         } catch (error) {
-          console.error("Fehler beim Holen der Links:", error);
-          linksTableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-500">Konnte Links nicht laden.</td></tr>`;
+          console.error("Could not fetch links:", error);
+          linksTableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-500">Could not load links.</td></tr>`;
         }
       };
 
-      renderLinksTable = (links) => {
+      const renderLinksTable = (links) => {
         linksTableBody.innerHTML = "";
         if (links.length === 0) {
-          linksTableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500">Noch keine dummen Links erstellt.</td></tr>`;
+          linksTableBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500">No dumb links created yet.</td></tr>`;
           return;
         }
         links.forEach((link) => {
           const row = document.createElement("tr");
           row.className =
             "border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50";
-          row.dataset.linkId = link.id;
           row.dataset.search = `${link.name || ""} ${link.original_url} ${
             link.short_code
           }`.toLowerCase();
           const nameDisplay = link.name
             ? `<span class="name-text font-semibold">${link.name}</span>`
-            : `<span class="name-text text-gray-400 italic">Namen hinzufügen...</span>`;
+            : `<span class="name-text text-gray-400 italic">Add a name...</span>`;
           row.innerHTML = `
-                    <td class="p-4"><button class="delete-button text-red-500 hover:text-red-700 font-semibold" data-id="${link.id}">Löschen</button></td>
-                    <td class="p-4 cursor-pointer" data-id="${link.id}"><div class="name-container">${nameDisplay}</div></td>
-                    <td class="p-4 truncate max-w-xs"><a href="${link.original_url}" target="_blank" class="text-blue-500 hover:underline">${link.original_url}</a></td>
-                    <td class="p-4 font-mono"><a href="/${link.short_code}" target="_blank" class="text-green-500 hover:underline">${link.short_code}</a></td>
-                    <td class="p-4 text-center font-bold">${link.clicks}</td>
-                `;
+            <td class="p-4"><button class="delete-button text-red-500 hover:text-red-700 font-semibold" data-id="${link.id}">Delete</button></td>
+            <td class="p-4 cursor-pointer" data-id="${link.id}"><div class="name-container">${nameDisplay}</div></td>
+            <td class="p-4 truncate max-w-xs"><a href="${link.original_url}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">${link.original_url}</a></td>
+            <td class="p-4 font-mono"><a href="/${link.short_code}" target="_blank" rel="noopener noreferrer" class="text-green-500 hover:underline">${link.short_code}</a></td>
+            <td class="p-4 text-center font-bold">${link.clicks}</td>
+          `;
           linksTableBody.appendChild(row);
         });
       };
 
-      updateName = async (linkId, newName) => {
+      const updateName = async (linkId, newName) => {
         try {
           await fetch(`/api/links/${linkId}/name`, {
             method: "PUT",
@@ -330,36 +369,48 @@
             body: JSON.stringify({ name: newName }),
           });
         } catch (error) {
-          console.error("Fehler beim Speichern des Namens:", error);
-          alert("Name konnte nicht gespeichert werden.");
+          console.error("Could not save name:", error);
+          alert("Could not save name.");
         }
       };
 
-      deleteLink = async (linkId) => {
-        if (!confirm("Diesen Link wirklich dumm und dämlich löschen?")) return;
+      const deleteLink = async (linkId) => {
+        if (!confirm("Are you sure you want to dumbly delete this link?"))
+          return;
         try {
           await fetch(`/api/links/${linkId}`, { method: "DELETE" });
           fetchAndDisplayLinks();
           fetchStats();
         } catch (error) {
-          console.error("Fehler beim Löschen:", error);
-          alert("Löschen fehlgeschlagen.");
+          console.error("Delete failed:", error);
+          alert("Delete failed.");
         }
       };
 
-      function setupEventListeners() {
+      const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
+      const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>`;
+
+      const applyTheme = (theme) => {
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+          themeToggleButton.innerHTML = sunIcon;
+        } else {
+          document.documentElement.classList.remove("dark");
+          themeToggleButton.innerHTML = moonIcon;
+        }
+      };
+
+      const setupEventListeners = () => {
         viewToggleButton.addEventListener("click", () => {
           const isHomeVisible = !homeView.classList.contains("hidden");
           if (isHomeVisible) {
             homeView.classList.add("hidden");
             overviewView.classList.remove("hidden");
-            viewToggleButton.textContent = "Zurück";
+            viewToggleButton.textContent = "Back to Main";
             fetchStats();
             fetchAndDisplayLinks();
           } else {
-            homeView.classList.remove("hidden");
-            overviewView.classList.add("hidden");
-            viewToggleButton.textContent = "Zeige alle Links";
+            resetToHomeView();
           }
         });
 
@@ -374,6 +425,28 @@
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
             shortenUrl(urlInput.value.trim());
+          }
+        });
+
+        copyButton.addEventListener("click", async () => {
+          const urlToCopy = shortUrlDisplay.value;
+          if (!navigator.clipboard) {
+            copyButton.textContent = "Error!";
+            copyButton.classList.add("bg-red-500");
+            return;
+          }
+          try {
+            await navigator.clipboard.writeText(urlToCopy);
+            copyButton.textContent = "Copied!";
+            copyButton.classList.add("bg-green-500");
+            setTimeout(() => {
+              copyButton.textContent = "Copy";
+              copyButton.classList.remove("bg-green-500");
+            }, 2000);
+          } catch (err) {
+            copyButton.textContent = "Failed!";
+            copyButton.classList.add("bg-red-500");
+            console.error("Failed to copy: ", err);
           }
         });
 
@@ -397,7 +470,7 @@
           const nameCell = event.target.closest("td[data-id]");
           if (nameCell && nameCell.querySelector(".name-container")) {
             const nameContainer = nameCell.querySelector(".name-container");
-            if (nameContainer.querySelector("input")) return; // Verhindert doppeltes Ausführen
+            if (nameContainer.querySelector("input")) return;
             const linkId = nameCell.dataset.id;
             const currentName =
               nameContainer.querySelector(".name-text").textContent;
@@ -422,43 +495,34 @@
 
         searchInput.addEventListener("input", (event) => {
           const searchTerm = event.target.value.toLowerCase();
-          linksTableBody.querySelectorAll("tr").forEach((row) => {
+          linksTableBody.querySelectorAll("tr[data-search]").forEach((row) => {
             row.style.display = row.dataset.search.includes(searchTerm)
               ? ""
               : "none";
           });
         });
-      }
 
-      const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
-      const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>`;
+        themeToggleButton.addEventListener("click", () => {
+          const newTheme = document.documentElement.classList.contains("dark")
+            ? "light"
+            : "dark";
+          localStorage.setItem("theme", newTheme);
+          applyTheme(newTheme);
+        });
+      };
 
-      function applyTheme(theme) {
-        if (theme === "dark") {
-          document.documentElement.classList.add("dark");
-          themeToggleButton.innerHTML = sunIcon;
-        } else {
-          document.documentElement.classList.remove("dark");
-          themeToggleButton.innerHTML = moonIcon;
-        }
-      }
+      // ########## INITIALIZATION & FINAL FIXES ##########
 
-      themeToggleButton.addEventListener("click", () => {
-        const newTheme = document.documentElement.classList.contains("dark")
-          ? "light"
-          : "dark";
-        localStorage.setItem("theme", newTheme);
-        applyTheme(newTheme);
-      });
-
-      // ################## INITIALISIERUNG ##################
+      // Wird ausgeführt, wenn die Seite das erste Mal geladen wird
       document.addEventListener("DOMContentLoaded", () => {
+        console.log("DOM fully loaded. Setting up the dumb app.");
         const savedTheme =
           localStorage.getItem("theme") ||
           (window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "dark"
             : "light");
         applyTheme(savedTheme);
+        resetToHomeView();
         fetchStats();
         setupEventListeners();
         if ("serviceWorker" in navigator) {
@@ -468,6 +532,15 @@
               .then((reg) => console.log("Dumb SW registered.", reg))
               .catch((err) => console.log("Dumb SW reg failed:", err));
           });
+        }
+      });
+
+      // DER FINALE CACHING-FIX: Wird JEDES MAL ausgeführt, wenn die Seite sichtbar wird
+      window.addEventListener("pageshow", function (event) {
+        if (event.persisted) {
+          console.log("Page was restored from bfcache. Forcing a dumb reset.");
+          resetToHomeView();
+          fetchStats();
         }
       });
     </script>

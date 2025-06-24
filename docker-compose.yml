@@ -1,0 +1,17 @@
+services:
+  dumbshort:
+    build: .
+    image: x3kim/dumbshort:latest
+    container_name: dumbshort
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-5001}:5000"
+    volumes:
+      - dumbshort-data:/app/data
+    environment:
+      - GUNICORN_WORKERS=${GUNICORN_WORKERS:-4}
+      - GUNICORN_LOG_LEVEL=${GUNICORN_LOG_LEVEL:-info}
+
+volumes:
+  dumbshort-data:
+    name: dumbshort-data

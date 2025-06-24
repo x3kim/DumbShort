@@ -152,7 +152,7 @@ html,
   -moz-tab-size: 4;
   /* 3 */
   -o-tab-size: 4;
-     tab-size: 4;
+    tab-size: 4;
   /* 3 */
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* 4 */
@@ -554,8 +554,12 @@ video {
   display: none;
 }
 
-.invisible {
-  visibility: hidden;
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.pointer-events-auto {
+  pointer-events: auto;
 }
 
 .static {
@@ -607,10 +611,6 @@ video {
   margin-top: 1.5rem;
 }
 
-.block {
-  display: block;
-}
-
 .inline-block {
   display: inline-block;
 }
@@ -635,6 +635,14 @@ video {
   min-height: 100vh;
 }
 
+.w-20 {
+  width: 5rem;
+}
+
+.w-24 {
+  width: 6rem;
+}
+
 .w-6 {
   width: 1.5rem;
 }
@@ -643,12 +651,8 @@ video {
   width: 100%;
 }
 
-.w-20 {
-  width: 5rem;
-}
-
-.w-24 {
-  width: 6rem;
+.max-w-5xl {
+  max-width: 64rem;
 }
 
 .max-w-md {
@@ -663,16 +667,8 @@ video {
   max-width: 20rem;
 }
 
-.max-w-3xl {
-  max-width: 48rem;
-}
-
-.max-w-2xl {
-  max-width: 42rem;
-}
-
-.max-w-5xl {
-  max-width: 64rem;
+.flex-1 {
+  flex: 1 1 0%;
 }
 
 .flex-grow {
@@ -910,6 +906,11 @@ video {
   line-height: 1rem;
 }
 
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
 .font-black {
   font-weight: 900;
 }
@@ -1010,31 +1011,13 @@ video {
   outline-offset: 2px;
 }
 
-.outline {
-  outline-style: solid;
-}
-
 .blur {
   --tw-blur: blur(8px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
-.transition {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
 .transition-all {
   transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-.transition-opacity {
-  transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -1045,8 +1028,10 @@ video {
   transition-duration: 150ms;
 }
 
-.duration-300 {
-  transition-duration: 300ms;
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 .hover\:bg-blue-600:hover {
@@ -1062,11 +1047,6 @@ video {
 .hover\:bg-gray-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:text-gray-600:hover {
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
 }
 
 .hover\:text-red-700:hover {
@@ -1146,10 +1126,4 @@ video {
 
 .dark\:hover\:bg-gray-700\/50:hover:is(.dark *) {
   background-color: rgb(55 65 81 / 0.5);
-}
-
-@media (min-width: 768px) {
-  .md\:p-8 {
-    padding: 2rem;
-  }
 }
