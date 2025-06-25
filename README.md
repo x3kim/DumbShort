@@ -4,6 +4,9 @@ A stupidly simple, no-bullshit URL shortener. Paste a URL. It's shortened and th
 
 Built in the spirit of [DumbWare.io](https://dumbware.io) – because sometimes the dumbest solution is the smartest choice.
 
+> [!NOTE]  
+> [DEMO PAGE](https://dumbshort-demo.x3kim.de/) <- Yup, just click it – takes you straight to the demo. Don't be shy. 🚀
+
 https://github.com/user-attachments/assets/b043356c-77de-4005-bf21-0ebf0d909911
 
 ---
